@@ -14,7 +14,7 @@ class Book {
     var lovesCount = 0
     var editorsChoice = 0
 
-    constructor() {}
+    constructor()
 
     constructor(
         publisher: String?,

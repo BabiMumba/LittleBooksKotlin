@@ -37,16 +37,16 @@ class CommentAdapter(private val context: Context, var list: ArrayList<Comment?>
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         val id = item!!.id
-        val bookId = item.bookId
-        val comment = item.comment
-        val publisher = item.publisher
-        val timestamp = item.timestamp
+        val bookId = DATA.EMPTY + item.bookId
+        val comment = DATA.EMPTY + item.comment
+        val publisher = DATA.EMPTY + item.publisher
+        val timestamp = DATA.EMPTY + item.timestamp
 
-        val date: String = MyApplication.formatTimestamp(timestamp!!.toLong())
-        holder.date.text = date
-        holder.comment.text = comment
+         val date: String = MyApplication.formatTimestamp(timestamp.toLong())
+         holder.date.text = date
+         holder.comment.text = comment
 
-        loadUserDetails(publisher, holder.name)
+         loadUserDetails(publisher, holder.name)
 
         holder.itemView.setOnClickListener {
             if (publisher == DATA.FirebaseUserUid) deleteComment(
@@ -100,7 +100,7 @@ class CommentAdapter(private val context: Context, var list: ArrayList<Comment?>
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.child(publisher!!).exists()) {
-                    val item = snapshot.getValue(User::class.java)!!
+                    val item = snapshot.child(publisher).getValue(User::class.java)!!
                     val username = item.username
                     val profileImage = item.profileImage
                     VOID.Glide_(true, context, profileImage, binding!!.profile)

@@ -239,7 +239,7 @@ class BookDetailsActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 //get data
                 if (snapshot.child(userId).exists()) {
-                    val item = snapshot.getValue(User::class.java)!!
+                    val item = snapshot.child(userId).getValue(User::class.java)!!
                     val userId = DATA.EMPTY + item.id
                     val imageProfile = DATA.EMPTY + item.profileImage
                     val username = DATA.EMPTY + item.username

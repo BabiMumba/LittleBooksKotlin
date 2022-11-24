@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.littlebooksadmin.Model.Comment
+import com.flatcode.littlebooksadmin.Modelimport.User
 import com.flatcode.littlebooksadmin.MyApplication
 import com.flatcode.littlebooksadmin.Unit.DATA
 import com.flatcode.littlebooksadmin.Unit.VOID
@@ -36,14 +37,15 @@ class CommentAdapter(private val context: Context, var list: ArrayList<Comment?>
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         val commentId = item!!.id
-        val bookId = item.bookId
-        val comment = item.comment
-        val publisher = item.publisher
-        val timestamp = item.timestamp
-        val date: String = MyApplication.formatTimestamp(timestamp!!.toLong())
+        val bookId = DATA.EMPTY + item.bookId
+        val comment = DATA.EMPTY + item.comment
+        val publisher = DATA.EMPTY + item.publisher
+        val timestamp = DATA.EMPTY + item.timestamp
 
+        val date: String = MyApplication.formatTimestamp(timestamp.toLong())
         holder.date.text = date
         holder.comment.text = comment
+
         loadUserDetails(publisher, holder.name)
 
         holder.itemView.setOnClickListener {
@@ -101,9 +103,10 @@ class CommentAdapter(private val context: Context, var list: ArrayList<Comment?>
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.child(publisher!!).exists()) {
-                    val username = DATA.EMPTY + snapshot.child(DATA.USER_NAME).value
-                    val profileImage = DATA.EMPTY + snapshot.child(DATA.PROFILE_IMAGE).value
-                    VOID.Glide(true, context, profileImage, binding!!.profile)
+                    val item = snapshot.child(publisher).getValue(User::class.java)!!
+                    val username = item.username
+                    val profileImage = item.profileImage
+                    VOID.Glide(true, context, profileImage!!, binding!!.profile)
                     name.text = username
                 }
             }
