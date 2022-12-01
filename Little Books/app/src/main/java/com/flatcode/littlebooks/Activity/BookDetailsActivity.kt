@@ -108,24 +108,24 @@ class BookDetailsActivity : AppCompatActivity() {
     private fun init() {
         loadBookDetails()
         loadComments()
-        VOID.incrementBookViewCount(bookId)
+        VOID.incrementItemCount(DATA.BOOKS, bookId, DATA.VIEWS_COUNT)
         VOID.isLoves(binding!!.love, bookId)
         VOID.nrLoves(binding!!.loves, bookId)
         VOID.isFavorite(binding!!.favorite, bookId, DATA.FirebaseUserUid)
     }
 
     private fun loadComments() {
+        list = ArrayList()
         val ref = FirebaseDatabase.getInstance().getReference(DATA.BOOKS)
         ref.child(bookId!!).child(DATA.COMMENTS)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     list!!.clear()
                     for (data in snapshot.children) {
-                        val comment = data.getValue(
-                            Comment::class.java
-                        )
+                        val comment = data.getValue(Comment::class.java)
                         list!!.add(comment)
                     }
+
                     adapter!!.notifyDataSetChanged()
                     if (list!!.isEmpty()) binding!!.textComment.visibility =
                         View.GONE else binding!!.textComment.visibility = View.VISIBLE

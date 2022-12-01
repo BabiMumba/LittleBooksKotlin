@@ -102,7 +102,7 @@ class BookDetailsActivity : AppCompatActivity() {
     private fun init() {
         loadBookDetails()
         loadComments()
-        VOID.incrementBookViewCount(bookId)
+        VOID.incrementItemCount(DATA.BOOKS, bookId, DATA.VIEWS_COUNT)
         VOID.isLoves(binding!!.love, bookId)
         VOID.nrLoves(binding!!.loves, bookId)
         VOID.isFavorite(binding!!.favorite, bookId, DATA.FirebaseUserUid)
@@ -115,9 +115,7 @@ class BookDetailsActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 list!!.clear()
                 for (data in snapshot.children) {
-                    val comment = data.getValue(
-                        Comment::class.java
-                    )
+                    val comment = data.getValue(Comment::class.java)
                     list!!.add(comment)
                 }
                 adapter = CommentAdapter(context, list!!)
@@ -129,12 +127,14 @@ class BookDetailsActivity : AppCompatActivity() {
     }
 
     private var comment = DATA.EMPTY
+
     private fun addCommentDialog() {
         val commentAddBinding = DialogCommentAddBinding.inflate(LayoutInflater.from(this))
         val builder = AlertDialog.Builder(this, R.style.CustomDialog)
         builder.setView(commentAddBinding.root)
         val alertDialog = builder.create()
         alertDialog.show()
+
         commentAddBinding.back.setOnClickListener { alertDialog.dismiss() }
         commentAddBinding.submit.setOnClickListener {
             comment = commentAddBinding.comment.text.toString().trim { it <= ' ' }

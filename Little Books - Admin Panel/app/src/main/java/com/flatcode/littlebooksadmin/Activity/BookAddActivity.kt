@@ -114,12 +114,13 @@ class BookAddActivity : AppCompatActivity() {
         hashMap[DATA.LOVES_COUNT] = 0
         hashMap[DATA.EDITORS_CHOICE] = 0
         hashMap[DATA.IMAGE] = DATA.EMPTY + DATA.BASIC
+
         assert(id != null)
         ref.child(id!!).setValue(hashMap).addOnSuccessListener {
             dialog!!.dismiss()
             Toast.makeText(context, "Successfully uploaded...", Toast.LENGTH_SHORT).show()
         }.addOnCompleteListener {
-            VOID.incrementBooksPublisherCount(DATA.FirebaseUserUid)
+            VOID.incrementItemCount(DATA.USERS, DATA.FirebaseUserUid, DATA.BOOKS_COUNT)
             uploadImage(id)
         }.addOnFailureListener { e: Exception ->
             dialog!!.dismiss()
@@ -134,6 +135,7 @@ class BookAddActivity : AppCompatActivity() {
     private fun loadBookCategories() {
         titleList = ArrayList()
         idList = ArrayList()
+
         val ref = FirebaseDatabase.getInstance().getReference(DATA.CATEGORIES)
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -142,6 +144,7 @@ class BookAddActivity : AppCompatActivity() {
                 for (data in snapshot.children) {
                     val categoryId = DATA.EMPTY + data.child(DATA.ID).value
                     val categoryTitle = DATA.EMPTY + data.child(DATA.CATEGORY).value
+
                     titleList!!.add(categoryTitle)
                     idList!!.add(categoryId)
                 }
@@ -160,6 +163,7 @@ class BookAddActivity : AppCompatActivity() {
         } else {
             hashMap[DATA.IMAGE] = DATA.EMPTY + DATA.BASIC
         }
+
         val reference = FirebaseDatabase.getInstance().getReference(DATA.BOOKS)
         reference.child(bookId!!).updateChildren(hashMap).addOnSuccessListener {
             dialog!!.dismiss()
@@ -174,6 +178,7 @@ class BookAddActivity : AppCompatActivity() {
     private fun uploadImage(BookId: String?) {
         dialog!!.setMessage("Updating Image Book")
         dialog!!.show()
+
         val filePathAndName = "BookImages/" + DATA.FirebaseUserUid
         val reference = FirebaseStorage.getInstance()
             .getReference(filePathAndName + DATA.DOT + VOID.getFileExtension(imageUri, context))
@@ -195,11 +200,12 @@ class BookAddActivity : AppCompatActivity() {
 
     private var selectedId: String? = null
     private var selectedTitle: String? = null
+
     private fun categoryPickDialog() {
         val categories = arrayOfNulls<String>(titleList!!.size)
-        for (i in titleList!!.indices) {
+        for (i in titleList!!.indices)
             categories[i] = titleList!![i]
-        }
+
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Pick Category")
             .setItems(categories) { dialog: DialogInterface?, which: Int ->

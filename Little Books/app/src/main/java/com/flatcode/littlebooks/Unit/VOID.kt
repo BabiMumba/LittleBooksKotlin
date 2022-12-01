@@ -62,7 +62,7 @@ object VOID {
         key: String?,
         value: String?,
         key2: String?,
-        value2: String?
+        value2: String?,
     ) {
         val intent = Intent(context, c)
         intent.putExtra(key, value)
@@ -72,7 +72,7 @@ object VOID {
 
     fun IntentExtra3(
         context: Context?, c: Class<*>?, key: String?, value: String?,
-        key2: String?, value2: String?, key3: String?, value3: String?
+        key2: String?, value2: String?, key3: String?, value3: String?,
     ) {
         val intent = Intent(context, c)
         intent.putExtra(key, value)
@@ -87,7 +87,7 @@ object VOID {
         publisher: String?,
         bookId: String?,
         bookUrl: String?,
-        bookTitle: String
+        bookTitle: String,
     ) {
         val dialog = ProgressDialog(context)
         dialog.setTitle("Please wait")
@@ -104,7 +104,7 @@ object VOID {
                     Toast.makeText(context, "Books Deleted Successfully...", Toast.LENGTH_SHORT)
                         .show()
                     dialogDelete.dismiss()
-                    incrementBooksPublisherRemoveCount(publisher)
+                    incrementItemRemoveCount(DATA.USERS, publisher, DATA.BOOKS_COUNT)
                 }.addOnFailureListener { e: Exception ->
                     dialog.dismiss()
                     Toast.makeText(context, "" + e.message, Toast.LENGTH_SHORT).show()
@@ -124,10 +124,8 @@ object VOID {
                 //convert bytes to KB, MB
                 val kb = bytes / 1024
                 val mb = kb / 1024
-                if (mb > 1) size.text = String.format(
-                    "%.2f",
-                    mb
-                ) + " MB" else if (kb > 1) size.text =
+                if (mb > 1) size.text = String.format("%.2f", mb) + " MB"
+                else if (kb > 1) size.text =
                     String.format("%.2f", mb) + " MB" else size.text =
                     String.format("%.2f", bytes) + " bytes"
             }
@@ -145,105 +143,43 @@ object VOID {
         })
     }
 
-    fun incrementBookViewCount(bookId: String?) {
-        val ref: DatabaseReference = FirebaseDatabase.getInstance().getReference(DATA.BOOKS)
-        ref.child(bookId!!).addListenerForSingleValueEvent(object : ValueEventListener {
+    fun incrementItemCount(database: String?, id: String?, childDB: String?) {
+        val ref = FirebaseDatabase.getInstance().getReference(database!!)
+        ref.child(id!!).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 //get views count
-                var viewsCount = DATA.EMPTY + snapshot.child(DATA.VIEWS_COUNT).value
-                if (viewsCount == DATA.EMPTY || viewsCount == DATA.NULL) {
-                    viewsCount = "0"
-                }
-                val newViewsCount = viewsCount.toLong() + 1
+                var itemsCount = DATA.EMPTY + snapshot.child(childDB!!).value
+                if (itemsCount == DATA.EMPTY || itemsCount == DATA.NULL)
+                    itemsCount = DATA.EMPTY + DATA.ZERO
+
+                val newItemsCount = itemsCount.toInt() + 1
                 val hashMap = HashMap<String?, Any>()
-                hashMap[DATA.VIEWS_COUNT] = newViewsCount
-                val reference: DatabaseReference =
-                    FirebaseDatabase.getInstance().getReference(DATA.BOOKS)
-                reference.child(bookId).updateChildren(hashMap)
+                hashMap[childDB] = newItemsCount
+                val reference = FirebaseDatabase.getInstance().getReference(database)
+                reference.child(id).updateChildren(hashMap)
             }
 
             override fun onCancelled(error: DatabaseError) {}
         })
     }
 
-    fun incrementBooksPublisherCount(userId: String?) {
-        val ref: DatabaseReference = FirebaseDatabase.getInstance().getReference(DATA.USERS)
-        ref.child(userId!!).addListenerForSingleValueEvent(object : ValueEventListener {
+    fun incrementItemRemoveCount(database: String?, id: String?, childDB: String?) {
+        val ref = FirebaseDatabase.getInstance().getReference(database!!)
+        ref.child(id!!).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 //get views count
-                var booksCount = DATA.EMPTY + snapshot.child(DATA.BOOKS_COUNT).value
-                if (booksCount == DATA.EMPTY || booksCount == DATA.NULL) {
-                    booksCount = "0"
+                var lovesCount = DATA.EMPTY + snapshot.child(childDB!!).value
+                if (lovesCount == DATA.EMPTY || lovesCount == DATA.NULL)
+                    lovesCount = DATA.EMPTY + DATA.ZERO
+
+                val i = lovesCount.toInt()
+                if (i > 0) {
+                    val removeLovesCount = lovesCount.toInt() - 1
+                    val hashMap = HashMap<String?, Any>()
+                    hashMap[childDB] = removeLovesCount
+                    val reference = FirebaseDatabase.getInstance().getReference(database)
+                    reference.child(id).updateChildren(hashMap)
                 }
-                val newBooksCount = booksCount.toLong() + 1
-                val hashMap = HashMap<String?, Any>()
-                hashMap[DATA.BOOKS_COUNT] = newBooksCount
-                val reference: DatabaseReference =
-                    FirebaseDatabase.getInstance().getReference(DATA.USERS)
-                reference.child(userId).updateChildren(hashMap)
-            }
-
-            override fun onCancelled(error: DatabaseError) {}
-        })
-    }
-
-    fun incrementBooksPublisherRemoveCount(userId: String?) {
-        val ref: DatabaseReference = FirebaseDatabase.getInstance().getReference(DATA.USERS)
-        ref.child(userId!!).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                //get views count
-                var booksCount = DATA.EMPTY + snapshot.child(DATA.BOOKS_COUNT).value
-                if (booksCount == DATA.EMPTY || booksCount == DATA.NULL) {
-                    booksCount = "0"
-                }
-                val newBooksCount = booksCount.toLong() - 1
-                val hashMap = HashMap<String?, Any>()
-                hashMap[DATA.BOOKS_COUNT] = newBooksCount
-                val reference: DatabaseReference =
-                    FirebaseDatabase.getInstance().getReference(DATA.USERS)
-                reference.child(userId).updateChildren(hashMap)
-            }
-
-            override fun onCancelled(error: DatabaseError) {}
-        })
-    }
-
-    fun incrementBookLovesCount(bookId: String?) {
-        val ref: DatabaseReference = FirebaseDatabase.getInstance().getReference(DATA.BOOKS)
-        ref.child(bookId!!).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                //get views count
-                var lovesCount = DATA.EMPTY + snapshot.child(DATA.LOVES_COUNT).value
-                if (lovesCount == DATA.EMPTY || lovesCount == DATA.NULL) {
-                    lovesCount = "0"
-                }
-                val newLovesCount = lovesCount.toLong() + 1
-                val hashMap = HashMap<String?, Any>()
-                hashMap[DATA.LOVES_COUNT] = newLovesCount
-                val reference: DatabaseReference =
-                    FirebaseDatabase.getInstance().getReference(DATA.BOOKS)
-                reference.child(bookId).updateChildren(hashMap)
-            }
-
-            override fun onCancelled(error: DatabaseError) {}
-        })
-    }
-
-    fun incrementBookLovesRemoveCount(bookId: String?) {
-        val ref: DatabaseReference = FirebaseDatabase.getInstance().getReference(DATA.BOOKS)
-        ref.child(bookId!!).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                //get views count
-                var lovesCount = DATA.EMPTY + snapshot.child("lovesCount").value
-                if (lovesCount == DATA.EMPTY || lovesCount == DATA.NULL) {
-                    lovesCount = "0"
-                }
-                val removeLovesCount = lovesCount.toLong() - 1
-                val hashMap = HashMap<String, Any>()
-                hashMap["lovesCount"] = removeLovesCount
-                val reference: DatabaseReference =
-                    FirebaseDatabase.getInstance().getReference(DATA.BOOKS)
-                reference.child(bookId).updateChildren(hashMap)
             }
 
             override fun onCancelled(error: DatabaseError) {}
@@ -266,15 +202,14 @@ object VOID {
         storageReference.getBytes(DATA.MAX_BYTES_PDF.toLong())
             .addOnSuccessListener { bytes: ByteArray ->
                 saveDownloadedBook(context, progressDialog, bytes, nameWithExtension, bookId)
-                incrementBookDownloadCount(bookId)
+                incrementItemCount(DATA.BOOKS, bookId, DATA.DOWNLOADS_COUNT)
             }.addOnFailureListener { e: Exception ->
                 progressDialog.dismiss()
                 Toast.makeText(
                     context,
                     "Failed to download due to " + e.message,
                     Toast.LENGTH_SHORT
-                )
-                    .show()
+                ).show()
             }
     }
 
@@ -283,7 +218,7 @@ object VOID {
         progressDialog: ProgressDialog,
         bytes: ByteArray,
         nameWithExtension: String,
-        bookId: String
+        bookId: String,
     ) {
         try {
             val downloadsFolder: File =
@@ -295,7 +230,7 @@ object VOID {
             out.close()
             Toast.makeText(context, "Saved to Download Folder", Toast.LENGTH_SHORT).show()
             progressDialog.dismiss()
-            incrementBookDownloadCount(bookId)
+            incrementItemCount(DATA.BOOKS, bookId, DATA.DOWNLOADS_COUNT)
         } catch (e: Exception) {
             Toast.makeText(
                 context,
@@ -304,32 +239,6 @@ object VOID {
             ).show()
             progressDialog.dismiss()
         }
-    }
-
-    private fun incrementBookDownloadCount(bookId: String) {
-        val ref: DatabaseReference = FirebaseDatabase.getInstance().getReference(DATA.BOOKS)
-        ref.child(bookId).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var downloadsCount =
-                    DATA.EMPTY + snapshot.child(DATA.DOWNLOADS_COUNT).getValue()
-                if (downloadsCount == DATA.EMPTY || downloadsCount == DATA.NULL) {
-                    downloadsCount = "0"
-                }
-
-                //convert to tong and increment 1
-                val newDownloadsCount = downloadsCount.toLong() + 1
-                //setup data to update
-                val hashMap = HashMap<String?, Any>()
-                hashMap[DATA.DOWNLOADS_COUNT] = newDownloadsCount
-
-                //Step 2) Update new incremented downloads count to db
-                val reference: DatabaseReference =
-                    FirebaseDatabase.getInstance().getReference(DATA.BOOKS)
-                reference.child(bookId).updateChildren(hashMap)
-            }
-
-            override fun onCancelled(error: DatabaseError) {}
-        })
     }
 
     fun Glide_(isUser: Boolean, context: Context?, Url: String?, Image: ImageView) {
@@ -494,11 +403,11 @@ object VOID {
         if (image.tag == "love") {
             FirebaseDatabase.getInstance().getReference(DATA.LOVES).child(bookId!!)
                 .child(DATA.FirebaseUserUid).setValue(true)
-            incrementBookLovesCount(bookId)
+            incrementItemCount(DATA.BOOKS, bookId, DATA.LOVES_COUNT)
         } else {
             FirebaseDatabase.getInstance().getReference(DATA.LOVES).child(bookId!!)
                 .child(DATA.FirebaseUserUid).removeValue()
-            incrementBookLovesRemoveCount(bookId)
+            incrementItemRemoveCount(DATA.BOOKS, bookId, DATA.LOVES_COUNT)
         }
     }
 
@@ -567,7 +476,7 @@ object VOID {
         publisher: String?,
         bookId: String?,
         bookUrl: String?,
-        bookTitle: String
+        bookTitle: String,
     ) {
         val dialog = Dialog(context!!)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -628,7 +537,7 @@ object VOID {
         adView: AdView,
         bannerName: String?,
         adView2: AdView,
-        bannerName2: String?
+        bannerName2: String?,
     ) {
         MobileAds.initialize(context!!) { }
 

@@ -47,6 +47,7 @@ object DATA {
     var ALL = "all"
     var USER = "user"
     var DOT = "."
+    var ZERO = 0
     var SPLASH_TIME = 2000
     var ITEM_DOUBLE = 20
     var MAX_BYTES_PDF = 50000000 // Here Max Size PDF 50MB
