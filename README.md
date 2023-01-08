@@ -51,7 +51,7 @@ Splash | Login | Register
 --- | --- | --- | 
 ![](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgbo3Kl5yY2x4gbUwoISHEZf1pSXR3h0V-AUXGUXxIRGAwcGIhg9DbrQJyb5xGLhD4YFKTXvwct9b6GTLD2zF94FT3rbxKpI62G645v-MYvE4nBf6-_1lzxlDhk9-z2qhAabpc2j9HYhw79646OTxijvfR-oTmqghOgzXefj1g5yzUMPq3VS32OfiCAYg/s900/night%20(13).jpg) | ![](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHVLjqL699qxcf0QENDfc3f0zyGafhkfUSUJCgAO-2UtKeF7RKUPnYmozlj6jEe5vieHVnd9oIEdBa0FyH4hqXPdtcJZS7DuqMXXD_YobPTKx7q_KNiM_OIzGAt7tG3yQkCyupnNMErD9l3ZONMkglOg6X2FJD1jAtJoeX6dVNBMRq8C_8Xt6sOzK_-Q/s900/night%20(14).jpg) | ![](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgfLgEsP1Je8HTAHVz3JDXUDF2V1P-knJedWCDo3Sz4Hy1sjwDew0ZH30T48ht30bjIA6n4Cs9Gwv5tlPR2NENuaTG2VWV_cSl_Pthlnvs4-gz5HZp2tMY5WNLCgqeopJL7SFE--BXrNXRu8lsvHtea6R4uaFSqlGWowN1pZwpw9yDiBhHsFBWqNwS4lg/s900/night%20(15).jpg) | 
 
-<a href='https://play.google.com/store/apps/details?id=com.flatcode.littletasks'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="170px"/></a>
+<a href='https://play.google.com/store/apps/details?id=com.flatcode.littlebooks'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="170px"/></a>
 <br />
 
-- [Java Code Version](https://github.com/selimdawa/LittleTasks/)
+- [Java Code Version](https://github.com/selimdawa/LittleBooks/)
