@@ -20,11 +20,7 @@ class CategoryMainAdapter(private val context: Context?, var list: ArrayList<Cat
     private var binding: ItemCategoryMainBinding? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemCategoryMainBinding.inflate(
-            LayoutInflater.from(
-                context
-            ), parent, false
-        )
+        binding = ItemCategoryMainBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding!!.root)
     }
 
@@ -52,9 +48,7 @@ class CategoryMainAdapter(private val context: Context?, var list: ArrayList<Cat
         return list.size
     }
 
-    inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(
-        view!!
-    ) {
+    inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
         var image: ImageView
         var imageBlur: ImageView
         var name: TextView

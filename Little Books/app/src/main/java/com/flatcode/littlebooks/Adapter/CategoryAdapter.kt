@@ -16,11 +16,7 @@ class CategoryAdapter(private val context: Context?, var list: ArrayList<Categor
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemCategoryBinding.inflate(
-            LayoutInflater.from(
-                context
-            ), parent, false
-        )
+        binding = ItemCategoryBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding!!.root)
     }
 

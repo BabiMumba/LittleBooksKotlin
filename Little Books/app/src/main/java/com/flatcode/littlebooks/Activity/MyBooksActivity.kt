@@ -27,11 +27,10 @@ class MyBooksActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityPageLinearSwitchBinding.inflate(
-            layoutInflater
-        )
+        binding = ActivityPageLinearSwitchBinding.inflate(layoutInflater)
         val view = binding!!.root
         setContentView(view)
+
         binding!!.toolbar.nameSpace.setText(R.string.my_books)
         binding!!.toolbar.back.setOnClickListener { v: View? -> onBackPressed() }
         type = DATA.TIMESTAMP

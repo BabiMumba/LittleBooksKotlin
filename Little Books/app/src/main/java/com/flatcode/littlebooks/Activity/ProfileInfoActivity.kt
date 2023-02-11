@@ -30,11 +30,10 @@ class ProfileInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityPageStaggeredSwitchBinding.inflate(
-            layoutInflater
-        )
+        binding = ActivityPageStaggeredSwitchBinding.inflate(layoutInflater)
         val view = binding!!.root
         setContentView(view)
+
         val intent = intent
         profileId = intent.getStringExtra(DATA.PROFILE_ID)
         binding!!.toolbar.nameSpace.setText(R.string.publishers_books)

@@ -38,6 +38,7 @@ class BookAddActivity : AppCompatActivity() {
         binding = ActivityBookAddBinding.inflate(layoutInflater)
         val view = binding!!.root
         setContentView(view)
+
         loadBookCategories()
         dialog = ProgressDialog(context)
         dialog!!.setTitle("Please wait...")
