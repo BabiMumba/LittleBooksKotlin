@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 import com.flatcode.littlebooks.Fragment.CategoriesFragment
 import com.flatcode.littlebooks.Fragment.FollowersFragment
 import com.flatcode.littlebooks.Fragment.HomeFragment
@@ -23,12 +24,10 @@ import com.flatcode.littlebooks.Unit.THEME
 import com.flatcode.littlebooks.Unit.VOID
 import com.flatcode.littlebooks.databinding.ActivityMainBinding
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.initialization.InitializationStatus
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import meow.bottomnavigation.MeowBottomNavigation
 import java.util.*
 
 class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
@@ -60,6 +59,7 @@ class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         } else if (sharedPreferences.getString(DATA.COLOR_OPTION, "NIGHT_ONE") == "NIGHT_ONE") {
             binding!!.toolbar.mode.setBackgroundResource(R.drawable.moon)
         }
+
         meowBottomNavigation = binding!!.bottomNavigation
         meowBottomNavigation!!.add(MeowBottomNavigation.Model(1, R.drawable.ic_settings))
         meowBottomNavigation!!.add(MeowBottomNavigation.Model(2, R.drawable.ic_home))
@@ -120,8 +120,9 @@ class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                     .show()
             }
         }
-        MobileAds.initialize(applicationContext) { initializationStatus: InitializationStatus? -> }
-        binding!!.toolbar.image.setOnClickListener { v: View? ->
+
+        MobileAds.initialize(applicationContext) { }
+        binding!!.toolbar.image.setOnClickListener {
             VOID.IntentExtra(
                 context,
                 CLASS.PROFILE,
