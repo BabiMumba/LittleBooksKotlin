@@ -58,7 +58,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx'         //Firebase Database
     implementation 'com.google.firebase:firebase-storage-ktx'          //Firebase Storage
     implementation 'com.google.firebase:firebase-analytics-ktx'        //Firebase Analytics
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'      //Firebase Crashlytics
+    //implementation 'com.google.firebase:firebase-crashlytics-ktx'      //Firebase Crashlytics
     //Pdf
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'      //Pdf view
     //Image
