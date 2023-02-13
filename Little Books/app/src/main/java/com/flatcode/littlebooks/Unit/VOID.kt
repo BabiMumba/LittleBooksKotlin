@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.flatcode.littlebooks.BuildConfig
 import com.flatcode.littlebooks.Model.ADs
 import com.flatcode.littlebooks.Model.Book
 import com.flatcode.littlebooks.R
@@ -311,13 +312,13 @@ object VOID {
 
     fun shareApp(context: Context?) {
         val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.setType("text/plain")
+        shareIntent.type = "text/plain"
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, "share app")
         shareIntent.putExtra(
             Intent.EXTRA_TEXT,
             " Download the app now from Google Play " + " https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID
         )
-        context!!.startActivity(Intent.createChooser(shareIntent, "إختر طريقة المشاركة"))
+        context!!.startActivity(Intent.createChooser(shareIntent, "Choose how to share"))
     }
 
     fun rateApp(context: Context?) {

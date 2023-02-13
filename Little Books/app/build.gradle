@@ -59,6 +59,7 @@ dependencies {
     //Layout
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'  //Constraint Layout
     implementation 'com.google.android.material:material:1.8.0'        //Material
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'           //Legacy Support
     implementation 'androidx.cardview:cardview:1.0.0'                  //Card View
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:31.2.0') //Firebase BOM
